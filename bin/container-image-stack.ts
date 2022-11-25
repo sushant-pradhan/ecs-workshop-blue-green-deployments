@@ -23,10 +23,10 @@ export class BlueGreenContainerImageStack extends cdk.Stack {
         // Build the stack
         const ecsBlueGreenRoles = new EcsBlueGreen.EcsBlueGreenRoles(this, 'EcsBlueGreenRoles');
         new EcsBlueGreen.EcsBlueGreenBuildImage(this, 'EcsBlueGreenBuildImage', {
-            codeBuildRole: ecsBlueGreenRoles.codeBuildRole,
-            ecsTaskRole: ecsBlueGreenRoles.ecsTaskRole,
-            codeRepoName: process.env.CODE_REPO_NAME,
-            codeRepoDesc: codeRepoDesc.valueAsString
+            // codeBuildRole: ecsBlueGreenRoles.codeBuildRole,
+            ecsTaskRole: ecsBlueGreenRoles.ecsTaskRole
+            // codeRepoName: process.env.CODE_REPO_NAME,
+            // codeRepoDesc: codeRepoDesc.valueAsString
         });
 
     }

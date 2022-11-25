@@ -11,10 +11,10 @@ test('Blue/Green deployment pipeline is created', () => {
     // WHEN
     const ecsBlueGreenRoles = new EcsBlueGreen.EcsBlueGreenRoles(stack, 'EcsBlueGreenRoles');
     const ecsBlueGreenBuildImage = new EcsBlueGreen.EcsBlueGreenBuildImage(stack, 'EcsBlueGreenBuildImage', {
-        codeBuildRole: ecsBlueGreenRoles.codeBuildRole,
+        // codeBuildRole: ecsBlueGreenRoles.codeBuildRole,
         ecsTaskRole: ecsBlueGreenRoles.ecsTaskRole,
-        codeRepoName: 'books',
-        codeRepoDesc: 'source code for books API',
+        // codeRepoName: 'books',
+        // codeRepoDesc: 'source code for books API',
         dockerHubUsername: 'username',
         dockerHubPassword: 'password'
     });
@@ -28,7 +28,7 @@ test('Blue/Green deployment pipeline is created', () => {
         vpc: ecsBlueGreenCluster.vpc,
         containerPort: 9000,
         ecrRepoName: ecsBlueGreenBuildImage.ecrRepo.repositoryName,
-        codeBuildProjectName: ecsBlueGreenBuildImage.codeBuildProject.projectName,
+        codeBuildProjectName: 'test',
         codeRepoName: 'books',
         ecsTaskRoleArn: ecsBlueGreenRoles.ecsTaskRole.roleArn,
         taskSetTerminationTimeInMinutes: 10

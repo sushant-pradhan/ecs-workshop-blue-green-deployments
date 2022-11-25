@@ -13,8 +13,8 @@ YELLOW="\033[1;33m"
 ##############################################################################
 echo -e "${GREEN}Start building the container image stack resources...."
 
-export AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
-export AWS_DEFAULT_REGION=$(aws configure get region)
+export AWS_ACCOUNT_ID="253739243553"
+export AWS_DEFAULT_REGION="us-east-2"
 export CODE_REPO_NAME=nginx-sample
 
 cdk bootstrap aws://$AWS_ACCOUNT_ID/$AWS_DEFAULT_REGION

@@ -35,9 +35,9 @@ export class EcsBlueGreenPipeline extends cdk.Construct {
     constructor(scope: cdk.Construct, id: string, props: EcsBlueGreenPipelineProps = {}) {
         super(scope, id);
 
-        const codeRepo = codeCommit.Repository.fromRepositoryName(this, 'codeRepo', props.codeRepoName!);
+        // const codeRepo = codeCommit.Repository.fromRepositoryName(this, 'codeRepo', props.codeRepoName!);
         const ecrRepo = ecr.Repository.fromRepositoryName(this, 'ecrRepo', props.ecrRepoName!);
-        const codeBuildProject = codeBuild.Project.fromProjectName(this, 'codeBuild', props.codeBuildProjectName!);
+        // const codeBuildProject = codeBuild.Project.fromProjectName(this, 'codeBuild', props.codeBuildProjectName!);
         const ecsTaskRole = iam.Role.fromRoleArn(this, 'ecsTaskRole', props.ecsTaskRoleArn!);
 
         const codePipelineRole = new iam.Role(this, 'codePipelineRole', {
@@ -135,47 +135,47 @@ export class EcsBlueGreenPipeline extends cdk.Construct {
         });
 
         // Code Pipeline - CloudWatch trigger event is created by CDK
-        const pipeline = new codePipeline.Pipeline(this, 'ecsBlueGreen', {
-            role: codePipelineRole,
-            artifactBucket: artifactsBucket,
-            stages: [
-                {
-                    stageName: 'Source',
-                    actions: [
-                        new codePipelineActions.CodeCommitSourceAction({
-                            actionName: 'Source',
-                            repository: codeRepo,
-                            output: sourceArtifact,
-                            branch: 'main'
-                        }),
-                    ]
-                },
-                {
-                    stageName: 'Build',
-                    actions: [
-                        new codePipelineActions.CodeBuildAction({
-                            actionName: 'Build',
-                            project: codeBuildProject,
-                            input: sourceArtifact,
-                            outputs: [buildArtifact]
-                        })
-                    ]
-                },
-                {
-                    stageName: 'Deploy',
-                    actions: [
-                        new codePipelineActions.CodeDeployEcsDeployAction({
-                            actionName: 'Deploy',
-                            deploymentGroup: ecsBlueGreenDeploymentGroup.ecsDeploymentGroup,
-                            appSpecTemplateInput: buildArtifact,
-                            taskDefinitionTemplateInput: buildArtifact,
-                        })
-                    ]
-                }
-            ]
-        });
+        // const pipeline = new codePipeline.Pipeline(this, 'ecsBlueGreen', {
+        //     role: codePipelineRole,
+        //     artifactBucket: artifactsBucket,
+        //     stages: [
+        //         {
+        //             stageName: 'Source',
+        //             actions: [
+        //                 new codePipelineActions.CodeCommitSourceAction({
+        //                     actionName: 'Source',
+        //                     repository: codeRepo,
+        //                     output: sourceArtifact,
+        //                     branch: 'main'
+        //                 }),
+        //             ]
+        //         },
+        //         {
+        //             stageName: 'Build',
+        //             actions: [
+        //                 new codePipelineActions.CodeBuildAction({
+        //                     actionName: 'Build',
+        //                     project: codeBuildProject,
+        //                     input: sourceArtifact,
+        //                     outputs: [buildArtifact]
+        //                 })
+        //             ]
+        //         },
+        //         {
+        //             stageName: 'Deploy',
+        //             actions: [
+        //                 new codePipelineActions.CodeDeployEcsDeployAction({
+        //                     actionName: 'Deploy',
+        //                     deploymentGroup: ecsBlueGreenDeploymentGroup.ecsDeploymentGroup,
+        //                     appSpecTemplateInput: buildArtifact,
+        //                     taskDefinitionTemplateInput: buildArtifact,
+        //                 })
+        //             ]
+        //         }
+        //     ]
+        // });
 
-        pipeline.node.addDependency(ecsBlueGreenDeploymentGroup);
+        // pipeline.node.addDependency(ecsBlueGreenDeploymentGroup);
 
         // Export the outputs
         new CfnOutput(this, 'ecsBlueGreenLBDns', {
@@ -183,7 +183,30 @@ export class EcsBlueGreenPipeline extends cdk.Construct {
             exportName: 'ecsBlueGreenLBDns',
             value: ecsBlueGreenService.alb.loadBalancerDnsName
         });
-
+        
+        new CfnOutput(this, 'artifactsBucketName', {
+            description: 'Artifacts Bucket Name',
+            exportName: 'artifactsBucketName',
+            value: artifactsBucket.bucketName
+        });
+        
+        new CfnOutput(this, 'taskDefinitionArn', {
+            description: 'Task Defn ARN',
+            exportName: 'taskDefinitionArn',
+            value: ecsBlueGreenService.ecsService.taskDefinition.taskDefinitionArn
+        });
+        
+        new CfnOutput(this, 'deploymentGroupName', {
+            description: 'Deployment Group Name',
+            exportName: 'deploymentGroupName',
+            value: ecsBlueGreenDeploymentGroup.ecsDeploymentGroup.deploymentGroupName
+        });
+        
+        new CfnOutput(this, 'applicationName', {
+            description: 'Application Name',
+            exportName: 'applicationName',
+            value: ecsBlueGreenDeploymentGroup.ecsDeploymentGroup.application.applicationName
+        });
     }
 
 }

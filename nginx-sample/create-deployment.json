@@ -1,0 +1,12 @@
+{
+    "applicationName": "APPLICATION_NAME",
+    "deploymentGroupName": "DEPLOYMENT_GROUP_NAME",
+    "revision": {
+        "revisionType": "S3",
+        "s3Location": {
+            "bucket": "ARTIFACT_BUCKET_NAME",
+            "key": "codedeploy/appspec.yaml",
+            "bundleType": "YAML"
+        }
+    }
+}

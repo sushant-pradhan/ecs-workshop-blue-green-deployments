@@ -8,7 +8,7 @@ import iam = require('@aws-cdk/aws-iam');
 export class EcsBlueGreenRoles extends cdk.Construct {
 
     public readonly ecsTaskRole: Role;
-    public readonly codeBuildRole: Role;
+    // public readonly codeBuildRole: Role;
 
     constructor(scope: cdk.Construct, id: string) {
         super(scope, id);
@@ -21,29 +21,29 @@ export class EcsBlueGreenRoles extends cdk.Construct {
 
 
         // IAM role for the Code Build project
-        this.codeBuildRole = new iam.Role(this, 'codeBuildServiceRole', {
-            assumedBy: new ServicePrincipal('codebuild.amazonaws.com')
-        });
+        // this.codeBuildRole = new iam.Role(this, 'codeBuildServiceRole', {
+        //     assumedBy: new ServicePrincipal('codebuild.amazonaws.com')
+        // });
 
-        const
-            inlinePolicyForCodeBuild = new iam.PolicyStatement({
-                effect: Effect.ALLOW,
-                actions: [
-                    'ecr:GetAuthorizationToken',
-                    'ecr:BatchCheckLayerAvailability',
-                    'ecr:InitiateLayerUpload',
-                    'ecr:UploadLayerPart',
-                    'ecr:CompleteLayerUpload',
-                    'ecr:PutImage',
-                    's3:Get*',
-                    's3:List*',
-                    's3:PutObject',
-                    'secretsmanager:GetSecretValue'
-                ],
-                resources: ['*']
-            });
+        // const
+        //     inlinePolicyForCodeBuild = new iam.PolicyStatement({
+        //         effect: Effect.ALLOW,
+        //         actions: [
+        //             'ecr:GetAuthorizationToken',
+        //             'ecr:BatchCheckLayerAvailability',
+        //             'ecr:InitiateLayerUpload',
+        //             'ecr:UploadLayerPart',
+        //             'ecr:CompleteLayerUpload',
+        //             'ecr:PutImage',
+        //             's3:Get*',
+        //             's3:List*',
+        //             's3:PutObject',
+        //             'secretsmanager:GetSecretValue'
+        //         ],
+        //         resources: ['*']
+        //     });
 
-        this.codeBuildRole.addToPolicy(inlinePolicyForCodeBuild);
+        // this.codeBuildRole.addToPolicy(inlinePolicyForCodeBuild);
     }
 
 }

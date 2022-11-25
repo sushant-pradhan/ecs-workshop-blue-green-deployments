@@ -6,7 +6,7 @@ Resources:
   - TargetService:
       Type: AWS::ECS::Service
       Properties:
-        TaskDefinition: "<TASK_DEFINITION>"
+        TaskDefinition: "TASK_DEFINITION"
         LoadBalancerInfo:
-          ContainerName: "nginx-sample"
+          ContainerName: "apiContainer"
           ContainerPort: 80

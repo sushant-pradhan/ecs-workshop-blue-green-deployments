@@ -44,8 +44,8 @@ export class BlueGreenPipelineStack extends cdk.Stack {
             vpc: ecsBlueGreenCluster.vpc,
             containerPort: Number(process.env.CONTAINER_PORT),
             ecrRepoName: process.env.ECR_REPO_NAME,
-            codeBuildProjectName: process.env.CODE_BUILD_PROJECT_NAME,
-            codeRepoName: process.env.CODE_REPO_NAME,
+            // codeBuildProjectName: process.env.CODE_BUILD_PROJECT_NAME,
+            // codeRepoName: process.env.CODE_REPO_NAME,
             ecsTaskRoleArn: process.env.ECS_TASK_ROLE_ARN,
             taskSetTerminationTimeInMinutes: taskSetTerminationTimeInMinutes.valueAsNumber
         })
